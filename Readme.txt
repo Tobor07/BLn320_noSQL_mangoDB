@@ -1,0 +1,1 @@
+Pour activer l'environnement: mangoDB_venv\Scripts\activate
