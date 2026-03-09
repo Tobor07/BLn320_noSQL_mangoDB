@@ -8,14 +8,14 @@ from pymongo import MongoClient
 
 dns = "mongodb+srv://adriennitot_db_user:XkZhru4IAE7E3I5z@cluster0.u6zu3vs.mongodb.net/?appName=Cluster0"
 
-def test_connect_to_mongodb():
+def connect_to_mongodb():
     try: 
         client = MongoClient(dns, ssl=True)
         
         client.server_info()
         print("Connexion réussie à MongoDB Atlas!")
         
-        db = client.ecommerce  # ✅ Changement ici
+        db = client.ecommerce  
         print("Base de données 'ecommerce' prête à l'utilisation")
         
         return db
@@ -24,7 +24,7 @@ def test_connect_to_mongodb():
         return None
 
 # Question 1: Connectez-vous à MongoDB Atlas et affichez les bases de données disponibles.
-db = test_connect_to_mongodb()
+db = connect_to_mongodb()
 
 
 # Question 2: Créez une collection "products" dans la base de données "ecommerce" et insérez un document représentant un produit (users, products, orders).

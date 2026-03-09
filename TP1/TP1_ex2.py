@@ -15,7 +15,7 @@ def connect_to_mongodb():
         client.server_info()
         print("Connexion réussie à MongoDB Atlas!")
         
-        db = client.reseau_social  # ✅ Changement ici
+        db = client.reseau_social  
         print("Base de données 'reseau_social' prête à l'utilisation")
         
         return db
@@ -38,23 +38,23 @@ publications = db.publications
 # ============================================================
 # Question 1: insérer 3 utilisateurs et 5 publications (commentaires et likes embarqués dans le document)
 users.insert_many([
-    {"_id": "user1", "nom": "Alice Dupont",  "age": 28, "ville": "Paris"},
-    {"_id": "user2", "nom": "Bob Martin",    "age": 35, "ville": "Lyon"},
-    {"_id": "user3", "nom": "Clara Bernard", "age": 22, "ville": "Marseille"}
+    {"_id": "user1", "nom": "prenom1",  "age": 28, "ville": "Paris"}, # prenom1
+    {"_id": "user2", "nom": "prenom2",    "age": 35, "ville": "Lyon"}, # prenom2
+    {"_id": "user3", "nom": "prenom3", "age": 22, "ville": "Marseille"} # prenom3
 ])
 print("3 utilisateurs insérés")
 
 publications.insert_many([
-    {"_id": "pub1", "titre": "Ma première publication",  "auteur_id": "user1", "auteur_nom": "Alice Dupont",   
-     "contenu": "Bonjour tout le monde ! 👋",                "likes": [], "commentaires": []},
-    {"_id": "pub2", "titre": "Recette du jour",          "auteur_id": "user1", "auteur_nom": "Alice Dupont",   
-     "contenu": "Aujourd'hui je fais une quiche 🥧",          "likes": [], "commentaires": []},
-    {"_id": "pub3", "titre": "Randonnée en montagne",    "auteur_id": "user2", "auteur_nom": "Bob Martin",     
-     "contenu": "Superbe journée dans les Alpes 🏔️",         "likes": [], "commentaires": []},
-    {"_id": "pub4", "titre": "Concert incroyable",       "auteur_id": "user2", "auteur_nom": "Bob Martin",     
-     "contenu": "Soirée inoubliable hier soir 🎵",            "likes": [], "commentaires": []},
-    {"_id": "pub5", "titre": "Nouvelle ville",           "auteur_id": "user3", "auteur_nom": "Clara Bernard",  
-     "contenu": "Je viens de m'installer à Bordeaux ! 🏙️",   "likes": [], "commentaires": []},
+    {"_id": "pub1", "titre": "Publi1",  "auteur_id": "user1", "auteur_nom": "prenom1",   
+     "contenu": "Publi1  blabla",                "likes": [], "commentaires": []},
+    {"_id": "pub2", "titre": "Publi2",          "auteur_id": "user1", "auteur_nom": "prenom1",   
+     "contenu": "Publi2  blabla",          "likes": [], "commentaires": []},
+    {"_id": "pub3", "titre": "Publi3",    "auteur_id": "user2", "auteur_nom": "prenom2",     
+     "contenu": "Publi3  blabla",         "likes": [], "commentaires": []},
+    {"_id": "pub4", "titre": "Publi4",       "auteur_id": "user2", "auteur_nom": "prenom2",     
+     "contenu": "Publi4  blabla",            "likes": [], "commentaires": []},
+    {"_id": "pub5", "titre": "Publi5",           "auteur_id": "user3", "auteur_nom": "prenom3",  
+     "contenu": "Publi5  blabla",   "likes": [], "commentaires": []},
 ])
 print("5 publications insérées\n")
 
@@ -62,27 +62,27 @@ print("5 publications insérées\n")
 # Commentaires sur pub1
 publications.update_one(
     {"_id": "pub1"},
-    {"$push": {"commentaires": {"auteur": "Bob Martin", "texte": "Bienvenue Alice !"}}}
+    {"$push": {"commentaires": {"auteur": "prenom2", "texte": "Com1 sur Publi1 user2"}}}
 )
 publications.update_one(
     {"_id": "pub1"},
-    {"$push": {"commentaires": {"auteur": "Clara Bernard", "texte": "Hello ! 😊"}}}
+    {"$push": {"commentaires": {"auteur": "prenom3", "texte": "Com2 sur Publi1 user3"}}}
 )
 
 # Commentaires sur pub3
 publications.update_one(
     {"_id": "pub3"},
-    {"$push": {"commentaires": {"auteur": "Alice Dupont", "texte": "Trop beau !"}}}
+    {"$push": {"commentaires": {"auteur": "prenom1", "texte": "Com1 sur Publi3 user1"}}}
 )
 publications.update_one(
     {"_id": "pub3"},
-    {"$push": {"commentaires": {"auteur": "Clara Bernard", "texte": "Je veux y aller 😍"}}}
+    {"$push": {"commentaires": {"auteur": "prenom3", "texte": "Com2 sur Publi3 user3"}}}
 )
 
 # Commentaires sur pub5
 publications.update_one(
     {"_id": "pub5"},
-    {"$push": {"commentaires": {"auteur": "Alice Dupont", "texte": "Bordeaux c'est super !"}}}
+    {"$push": {"commentaires": {"auteur": "prenom1", "texte": "Com1 sur Publi5 user1"}}}
 )
 print("Commentaires ajoutés sur pub1, pub3, pub5")
 
@@ -111,26 +111,26 @@ print("Likes ajoutés sur pub1, pub2, pub3, pub4")
 # ============================================================
 # Toutes les publications
 print("=" * 50)
-print("📋 TOUTES LES PUBLICATIONS :")
+print("TOUTES LES PUBLICATIONS :")
 print("=" * 50)
 for pub in publications.find():
-    print(f"  📝 [{pub['auteur_nom']}] {pub['titre']}")
+    print(f"  [{pub['auteur_nom']}] {pub['titre']}")
     print(f"      {pub['contenu']}")
-    print(f"      ❤️  {len(pub['likes'])} likes | 💬 {len(pub['commentaires'])} commentaires\n")
+    print(f"      {len(pub['likes'])} likes | {len(pub['commentaires'])} commentaires\n")
 
 # Publications d'un utilisateur
 print("=" * 50)
-print("👤 PUBLICATIONS DE Alice Dupont :")
+print("PUBLICATIONS DE prenom1 :")
 print("=" * 50)
 for pub in publications.find({"auteur_id": "user1"}):
-    print(f"  📝 {pub['titre']} - {pub['contenu']}")
+    print(f"  {pub['titre']} - {pub['contenu']}")
 print()
 
 # Commentaires d'une publication
 print("=" * 50)
-print("💬 COMMENTAIRES DE 'Ma première publication' :")
+print("COMMENTAIRES DE 'Publi1' :")
 print("=" * 50)
-pub = publications.find_one({"titre": "Ma première publication"})
+pub = publications.find_one({"titre": "Publi1"})
 if pub["commentaires"]:
     for com in pub["commentaires"]:
         print(f"  [{com['auteur']}] : {com['texte']}")
@@ -138,9 +138,9 @@ else:
     print("  Aucun commentaire")
 print()
 
-# 4Publication avec le plus de likes (aggregation)
+# Publication avec le plus de likes
 print("=" * 50)
-print("🏆 PUBLICATION AVEC LE PLUS DE LIKES :")
+print("PUBLICATION AVEC LE PLUS DE LIKES :")
 print("=" * 50)
 top_pub = list(publications.aggregate([
     {
@@ -153,12 +153,12 @@ top_pub = list(publications.aggregate([
     {"$sort": {"nb_likes": -1}},  # tri décroissant
     {"$limit": 1}                  # on prend le premier
 ]))
-print(f"  🥇 {top_pub[0]['titre']} par {top_pub[0]['auteur_nom']} → {top_pub[0]['nb_likes']} likes")
+print(f"  {top_pub[0]['titre']} par {top_pub[0]['auteur_nom']} → {top_pub[0]['nb_likes']} likes")
 print()
 
-# Nombre de publications par utilisateur (aggregation)
+# Nombre de publications par utilisateur
 print("=" * 50)
-print("📊 NOMBRE DE PUBLICATIONS PAR UTILISATEUR :")
+print("NOMBRE DE PUBLICATIONS PAR UTILISATEUR :")
 print("=" * 50)
 stats = publications.aggregate([
     {
@@ -170,4 +170,4 @@ stats = publications.aggregate([
     {"$sort": {"nb_publications": -1}}
 ])
 for stat in stats:
-    print(f"  👤 {stat['_id']} → {stat['nb_publications']} publication(s)")
+    print(f"  {stat['_id']} → {stat['nb_publications']} publication(s)")
