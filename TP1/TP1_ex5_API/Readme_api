@@ -1,0 +1,33 @@
+Pour lanvcer le serveur: 
+cd TP1/TP1_ex5_API
+uvicorn main:app --reload
+
+Une fois lancé aller sur :
+http://localhost:8000/docs#/
+
+
+Comment fonctionne une API : 
+Navigateur/Client          Serveur API              MongoDB
+     │                         │                       │
+     │  GET /items             │                       │
+     │ ──────────────────────► │                       │
+     │                         │  cherche les mangas   │
+     │                         │ ─────────────────────►│
+     │                         │  retourne les données │
+     │                         │ ◄─────────────────────│
+     │  { "mangas": [...] }    │                       │
+     │ ◄───────────────────────│                       │
+
+Avec :
+FastAPI -> Le framework qui crée les routes
+Uvicorn -> Le serveur qui fait tourner l'API en local
+PyMongo -> Pour parler à MongoDB
+
+
+Résumé visuel du flux:
+Tu tapes une URL              FastAPI               MongoDB
+─────────────────             ───────               ───────
+/items          ──────────►  get_all_items()  ──►  collection.find()
+/items/664abc   ──────────►  get_item(id)     ──►  find_one({_id})
+/search?keyword ──────────►  search()         ──►  find({$regex})
+POST /items     ──────────►  create_item()    ──►  insert_one()
