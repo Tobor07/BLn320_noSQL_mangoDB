@@ -24,4 +24,5 @@ build/
 .DS_Store
 Thumbs.db
 
+DNS.py
 DSN.py
