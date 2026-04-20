@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-dns = "mongodb+srv://adriennitot_db_user:XkZhru4IAE7E3I5z@cluster0.u6zu3vs.mongodb.net/?appName=Cluster0"
+dns = "mongodb+srv://adriennitot_db_user:clé@cluster0.u6zu3vs.mongodb.net/?appName=Cluster0"
 
 def test_connect_to_mongodb():
     try: 
